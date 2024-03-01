@@ -36,7 +36,7 @@ contract Reward is Ownable {
     constructor(address _token) {
         token = _token;
         pBRP = new PBRP();
-        require(IERC20Metadata(token).decimals() <= 18, "error decimals");
+        require(IERC20Metadata(token).decimals() == 6, "error decimals");
     }
 
     function setMerkleRoot(
@@ -89,9 +89,7 @@ contract Reward is Ownable {
             IERC20Metadata(token).safeTransfer(account, tokenAmount);
 
         // bBRP
-        uint bBRPAmount = (amount *
-            (10000 - ratio) *
-            10 ** (18 - IERC20Metadata(token).decimals())) / 10000;
+        uint bBRPAmount = (amount * (10000 - ratio))  / 10000;
         if (bBRPAmount > 0) pBRP.mint(account, bBRPAmount);
 
         emit Claimed(account, tokenAmount, token);
@@ -99,7 +97,7 @@ contract Reward is Ownable {
     }
 
     function updateToken(address token_) external onlyOwner {
-        require(IERC20Metadata(token).decimals() <= 18, "error decimals");
+        require(IERC20Metadata(token).decimals() == 6, "error decimals");
         _reclaim();
         emit RewardTokenChanged(msg.sender, token, token_);
         token = token_;

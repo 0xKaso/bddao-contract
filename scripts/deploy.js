@@ -15,8 +15,11 @@ async function main() {
   const reward = await Reward.deploy("0xc2132D05D31c914a87C6611C10748AEb04B58e8F");
   await reward.deployed();
 
+  const pBRP = await reward.pBRP()
+
   console.table({
-    reward: reward.address
+    reward: reward.address,
+    pBRP: pBRP.address
   });
 }
 
